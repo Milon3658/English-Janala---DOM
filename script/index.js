@@ -56,7 +56,7 @@ const displayLevelWords = (words) => {
       <p>${word.meaning ?? ""}</p>
       <div class="flex flex-row justify-between">
       <button onClick="LoadWordDetail(${word.id})" class="btn bg-[#1A91FF10] hover:bg-[#1A91FF80] h-8 w-8"><i class="fa-solid fa-circle-info"></i></button>
-      <button class="btn bg-[#1A91FF10] hover:bg-[#1A91FF80] h-8 w-8"><i class="fa-solid fa-volume-high"></i></button>
+      <button onClick="pronounceWord('${word.word}')" class="btn bg-[#1A91FF10] hover:bg-[#1A91FF80] h-8 w-8"><i class="fa-solid fa-volume-high"></i></button>
       </div>
     </div>
   </div>
@@ -79,7 +79,8 @@ const displayWordDetails = (word) => {
   detailsBox.innerHTML = `
     <div class="flex flex-row">
             <h2 class="text-2xl font-bold">
-              ${word.word} (<i class="fa-solid fa-microphone-lines"></i>
+              ${word.word} (
+              <button class="hover:cursor-pointer" onClick="pronounceWord('${word.word}')"><i class="fa-solid fa-microphone-lines"></i></button>
               ${word.pronunciation} )
             </h2>
           </div>
@@ -117,3 +118,8 @@ document.getElementById("btn-search").addEventListener("click", () => {
       displayLevelWords(filterWords);
     });
 });
+function pronounceWord(word) {
+  const utterance = new SpeechSynthesisUtterance(word);
+  utterance.lang = "en-EN"; // English
+  window.speechSynthesis.speak(utterance);
+}
